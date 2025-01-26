@@ -56,7 +56,11 @@ jobs:
   deploy:
     runs-on: ubuntu-22.04
     needs: build
-    
+
+    permissions:
+      id-token: write
+      contents: read #This is required for actions/checkout
+      
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
