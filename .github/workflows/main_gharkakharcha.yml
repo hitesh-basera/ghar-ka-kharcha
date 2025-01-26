@@ -52,8 +52,8 @@ jobs:
         with:
           name: node-app
 
-      # - name: Unzip artifact for deployment
-      #   run: unzip release.zip
+      - name: Unzip artifact for deployment
+        run: unzip release.zip
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -67,7 +67,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'gharkakharcha'
-          package: ./release.zip # Path to your built application
+          package: ./ # Path to your built application
           
       # Azure logout 
       - name: logout
