@@ -9,10 +9,6 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-      id-token: write
-      contents: read
-
 env:
   AZURE_WEBAPP_NAME: gharkakharcha   # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
@@ -22,6 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     permissions:
+      id-token: write
       contents: read #This is required for actions/checkout
 
     steps:
@@ -69,12 +66,12 @@ jobs:
       # - name: Unzip artifact for deployment
       #   run: unzip release.zip
       
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2A26B331A18D492B8D26F6AEB9894465 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A6029E527A444D389F202C4264DC76B9 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_3D69722128AF4F7CAD0579EF16D68A48 }}
+      # - name: Login to Azure
+      #   uses: azure/login@v2
+      #   with:
+      #     client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2A26B331A18D492B8D26F6AEB9894465 }}
+      #     tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A6029E527A444D389F202C4264DC76B9 }}
+      #     subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_3D69722128AF4F7CAD0579EF16D68A48 }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
