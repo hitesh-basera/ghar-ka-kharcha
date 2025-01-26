@@ -67,8 +67,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'gharkakharcha'
-          slot-name: 'Production'
-          package: ./dist # Path to your built application
+          package: ./ # Path to your built application
           
       # Azure logout 
       - name: logout
