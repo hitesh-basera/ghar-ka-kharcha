@@ -68,7 +68,7 @@ jobs:
         with:
           app-name: 'gharkakharcha'
           slot-name: 'Production'
-          package: ./dist/* # Path to your built application
+          package: ./dist # Path to your built application
           
       # Azure logout 
       - name: logout
