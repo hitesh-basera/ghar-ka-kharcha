@@ -39,7 +39,7 @@ jobs:
           path: release.zip
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: build
     
     permissions:
@@ -60,7 +60,7 @@ jobs:
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2A26B331A18D492B8D26F6AEB9894465 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A6029E527A444D389F202C4264DC76B9 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_ADE78E914D764C77B264B15B97D82C5F }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_3D69722128AF4F7CAD0579EF16D68A48 }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
