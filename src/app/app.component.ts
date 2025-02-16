@@ -15,7 +15,7 @@ import { FinanceDbService } from './services/finance-db.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'Ghar ka kharcha';
+  title = 'Daily Kharcha';
   accounts: Account[] = [];
   selectedAccount: Account | null = null;
   //@Output() accountSelected = new EventEmitter<Account>();

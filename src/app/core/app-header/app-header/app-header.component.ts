@@ -22,7 +22,7 @@ import { MatSelectionListChange } from '@angular/material/list';
   styleUrl: './app-header.component.scss'
 })
 export class AppHeaderComponent implements OnInit{
-  title = 'Ghar ka kharcha';
+  title = 'Daily Kharcha';
   selectedAccount: Account | undefined = undefined; // Initially no account selected or default
   @Input() accounts: Account[] = []; // Input all accounts
   //@Output() accountSelected = new EventEmitter<Account>(); // Emit selected account
