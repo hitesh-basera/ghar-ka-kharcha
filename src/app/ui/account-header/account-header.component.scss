@@ -1,0 +1,22 @@
+.account-header {
+    // display: flex;
+    width: 99em;
+    justify-content: space-between; /* Align items to left and right */
+    //align-items: center; /* Vertically center content */
+    padding: 16px; /* Add padding */
+    border-bottom: 1px solid #ccc; /* Add a bottom border */
+  }
+
+  .account-actions {
+    width:80em;
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: 8px; /* Add spacing between buttons and search box */
+  }
+  .spacer {
+    flex: 1 1 auto; /* Takes up all available space */
+  }
+  .search-box {
+      margin-left: 16px; /* Add some space to the left of search box */
+      float:right;
+  }

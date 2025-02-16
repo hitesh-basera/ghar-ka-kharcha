@@ -1,0 +1,97 @@
+<div class="container"><h2 mat-dialog-title>Add Account</h2>
+    <form [formGroup]="accountForm" (ngSubmit)="saveAccount()">
+      <div mat-dialog-content>
+        <div class="col-sm-12 mt-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Enter account name</mat-label>
+            <input matInput type="text" id="name" placeholder="Account Name" formControlName="name" required>
+            @if (accountForm.get('name')?.hasError('required') && (accountForm.get('name')?.dirty || accountForm.get('name')?.touched)) {
+                <mat-error>Name is required.</mat-error>
+              }
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12 mt-3">
+          <mat-form-field>
+            <mat-label>Account Type</mat-label>
+            <mat-select formControlName="type">
+              <mat-option>None</mat-option>
+              <mat-option value="Asset">Asset</mat-option>
+              <mat-option value="Liability">Liability</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12 mt-3">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Provide budget</mat-label>
+            <input matInput type="number" id="balance" placeholder="Budget amount" min="1" formControlName="balance" required>
+            @if (accountForm.get('balance')?.hasError('required') && accountForm.get('balance')?.touched) {
+                <mat-error>Budget is required</mat-error>
+              }
+            @if(accountForm.get('balance')?.hasError('min') && accountForm.get('balance')?.touched)
+            {
+                <mat-error>Minimum budget more than Zero(0)</mat-error>
+            }
+            </mat-form-field>
+        </div>
+        <!-- <div class="form-field">
+          <label for="type">Type:</label>
+          <select id="type" formControlName="type">
+            <option value="Asset">Asset</option>
+            <option value="Liability">Liability</option>
+          </select>
+        </div> -->
+      </div>
+      <div mat-dialog-actions>
+        <button mat-button (click)="onNoClick()">Cancel</button>
+        <button mat-raised-button color="primary" type="submit">Save</button>
+      </div>
+</form>
+</div>
+
+
+<!-- <div class="container">
+    <h4>Create New Account</h4> -->
+    <!--<form [formGroup]="accountForm" novalidate (ngSubmit)="createAccount()">
+
+
+      
+         <div class="col-sm-12 mt-3"> -->
+            <!-- <label for="accountName">Account Name:</label> -->
+            <!-- <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Enter account name</mat-label>
+            <input matInput type="text" id="accountName" placeholder="Account Name" formControlName="accountName"
+            (blur)="updateAccountErrorMessage()" required>
+            @if (accountForm.get('accountName')?.hasError('required') && accountForm.get('accountName')?.touched) {
+                <mat-error>{{accountErrorMessage()}}</mat-error>
+              }</mat-form-field> -->
+            <!-- <div *ngIf="accountForm.get('accountName')?.hasError('required') && accountForm.get('accountName')?.touched">
+                Account Name is required.
+              </div> -->
+          <!-- </div> -->
+        
+          <!-- <div class="col-sm-12 mt-3 mb-3"> -->
+            <!-- <label for="budget">Budget:</label> -->
+            <!-- <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Provide amount</mat-label>
+            <input matInput type="number" id="budget" placeholder="Amount" formControlName="budget" (blur)="updateBudgetErrorMessage()" required>
+            @if (accountForm.get('budget')?.hasError('required') && accountForm.get('budget')?.touched) {
+                <mat-error>{{budgetErrorMessage()}}</mat-error>
+              }
+            @if(accountForm.get('budget')?.hasError('min') && accountForm.get('budget')?.touched)
+            {
+                <mat-error>{{budgetErrorMessage()}}</mat-error>
+            }
+            </mat-form-field> -->
+           
+            <!-- <div *ngIf="accountForm.get('budget')?.hasError('required') && accountForm.get('budget')?.touched">
+              Budget is required.
+            </div>
+            <div *ngIf="accountForm.get('budget')?.hasError('min') && accountForm.get('budget')?.touched">
+              Budget must be greater than 0.
+            </div> -->
+          <!-- </div>
+        
+          <button mat-raised-button color="primary" (click)="createAccount()" [disabled]="!accountForm.valid">Create Account</button>
+        
+    </form> -->
+<!-- </div> -->

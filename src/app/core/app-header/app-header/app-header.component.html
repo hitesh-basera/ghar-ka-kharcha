@@ -2,18 +2,46 @@
     <td-navigation-drawer #navDrawer flex sidenavTitle="{{title}}">
       <mat-nav-list>
         <ng-container *ngIf="shouldDisplay(); else elseBlock">
-          <a mat-list-item routerLink="/home" routerLinkActive="active-link" (click)="navDrawer.close()">Home</a>
-          <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link" (click)="navDrawer.close()">View
-            expenses</a>
-          <a mat-list-item routerLink="/login" (click)="logOut();navDrawer.close()"
-          >Logout</a>
+          <a mat-list-item routerLink="/home" routerLinkActive="active-link" (click)="navDrawer.close()">Dashboard</a>
+          <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link" (click)="navDrawer.close()">Transactions</a>
+          <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link" (click)="navDrawer.close()">Reports</a>
+          <!-- <a mat-list-item routerLink="/login" (click)="logOut();navDrawer.close()"
+          >Logout</a> -->
+          <mat-divider></mat-divider>
+          <mat-selection-list class="account-items" (selectionChange)="onAccountSelect($event)" [multiple]="false" hideSingleSelectionIndicator>
+            <!-- @for(account of accounts;track account.id)
+            { -->
+              <mat-list-option *ngFor="let account of accounts" [value]="account" [selected]="account === selectedAccount">
+                <div class="account-list">
+                <span class="account-name">{{ account.name| titlecase }}</span>
+                <span class="account-balance">{{ account.balance }}</span>
+              </div>
+              </mat-list-option>
+              
+              <!-- <mat-list-item>
+                <div class="account-list">
+                <span class="account-name">{{ account.name| titlecase }}</span>
+                <span class="account-balance">{{ account.balance }}</span>
+                </div>
+              </mat-list-item> 
+            }-->
+          </mat-selection-list>
+          <mat-divider></mat-divider>
+          <a mat-list-item routerLinkActive="active-link" (click)="openNewAccountDialog()">
+            <i class="fa fa-1x fa-fw fa-plus"></i>Add Acount</a>
         </ng-container>
+        <div class="header-nav">
         <ng-template #elseBlock>
-          <a mat-list-item *ngIf="router.url === '/login'" routerLink="/signUp"
-             routerLinkActive="active-link" (click)="navDrawer.close()">Signup</a>
+          <a mat-button *ngIf="router.url === '/login'" routerLink="/signUp"
+                 routerLinkActive="active-link" (click)="navDrawer.close()"> <i class="fa fa-1x fa-fw fa-user-plus"></i>Signup</a>
+          <a mat-button *ngIf="router.url === '/signUp'" routerLink="/login"
+                 routerLinkActive="active-link" (click)="navDrawer.close()"> <i class="fa fa-1x fa-fw fa-user-plus"></i>Login</a>
+          <!-- <a mat-list-item *ngIf="router.url === '/login'" routerLink="/signUp"
+          routerLinkActive="active-link" (click)="navDrawer.close()">Signup</a>
           <a mat-list-item *ngIf="router.url === '/signUp'" routerLink="/login"
-             routerLinkActive="active-link" (click)="navDrawer.close()">Login</a>
+             routerLinkActive="active-link" (click)="navDrawer.close()">Login</a> -->
         </ng-template>
+      </div>
       </mat-nav-list>
     </td-navigation-drawer>
     <td-layout-nav>
@@ -24,24 +52,23 @@
           </button>
           <span class="pt-1">{{title}}</span>
           <span flex></span>
+          <div class="header-nav">
           <ng-container *ngIf="shouldDisplay(); else elseBlock">
-            <div class="header-nav">
-              <a *ngIf="router.url === '/dashboard'" class="text-white" mat-button routerLink="/home"
-                 routerLinkActive="active-link"> <i class="fa fa-1x fa-fw fa-home"></i> Home</a>
-              <a *ngIf="router.url === '/home'" class="text-white" mat-button routerLink="/dashboard"
-                 routerLinkActive="active-link"> <i class="fa fa-1x fa-fw fa-bar-chart"></i> View Expenses</a>
-              <a mat-button routerLink="/login" class="text-white" (click)="logOut();navDrawer.close()"
-              ><i class="fa fa-1x fa-fw fa-sign-out"></i> Logout</a>
-            </div>
+              <a *ngIf="router.url === '/dashboard'" class="text-white" mat-button routerLink="/dashboard"
+                 routerLinkActive="active-link"> <i class="fa fa-1x fa-fw fa-home"></i> Dashboard</a>
+              <a *ngIf="router.url === '/home'" class="text-white" mat-button routerLink="/home"
+                 routerLinkActive="active-link"> <i class="fa fa-1x fa-fw fa-bar-chart"></i> Reports</a>
+              <!-- <a mat-button routerLink="/login" class="text-white" (click)="logOut();navDrawer.close()"
+              ><i class="fa fa-1x fa-fw fa-sign-out"></i> Logout</a> -->
+              
           </ng-container>
-          <ng-template #elseBlock>
-            <div class="header-nav">
-              <a mat-button *ngIf="router.url === '/login'" class="text-white" routerLink="/signUp"
+          <!-- <ng-template #elseBlockHeader>
+              <a mat-button *ngIf="router.url === '/login'" routerLink="/signUp"
                  routerLinkActive="active-link" (click)="navDrawer.close()"> <i class="fa fa-1x fa-fw fa-user-plus"></i>Signup</a>
-              <a mat-button *ngIf="router.url === '/signUp'" class="text-white" routerLink="/login"
+              <a mat-button *ngIf="router.url === '/signUp'" routerLink="/login"
                  routerLinkActive="active-link" (click)="navDrawer.close()"> <i class="fa fa-1x fa-fw fa-user-plus"></i>Login</a>
-            </div>
-          </ng-template>
+          </ng-template> -->
+        </div>
           <div>
           </div>
         </div>

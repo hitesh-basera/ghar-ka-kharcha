@@ -1,0 +1,23 @@
+<!-- <div style="width: 300px;margin-top: 40px; align-items: center;">
+    
+    
+</div> -->
+<div class="container" *ngIf="accounts.length > 0; else noAccounts">
+    <app-account></app-account>
+</div>
+<ng-template #noAccounts>
+    <div class="container">
+        <h1>Ghar ka Kharcha</h1>
+        <span style="text-align: center;">A simple finance tracker app, to get started you need to add an account. You can manage it locally yourself.</span>
+    <!-- <div class="accounts" style="width: 300px;margin-top: 40px; align-items: center;">
+        <h2>Accounts</h2> -->
+        <!-- <button (click)="openNewAccountDialog()">Add Account</button> -->
+        <button mat-raised-button color="purple-button" (click)="openNewAccountDialog()"><i class="fa fa-1x fa-fw fa-plus"></i>Add Account</button>
+        <!-- <ul>
+          <li *ngFor="let account of accounts">
+            {{ account.name }} ({{ account.type }}): {{ account.balance | currency }}
+          </li>
+        </ul>
+      </div> -->
+    </div>
+  </ng-template>

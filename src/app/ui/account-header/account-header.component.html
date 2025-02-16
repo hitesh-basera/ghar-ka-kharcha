@@ -1,0 +1,26 @@
+<div class="account-header">
+    <div class="account-info">
+      <h3 class="account-name">{{ selectedAccount?.name |titlecase }}</h3>
+      <p class="account-balance">{{ selectedAccount?.balance | number }}</p>
+      <div class="account-actions">
+        <!-- <button mat-icon-button (click)="importTransactions.emit()">
+          <mat-icon>file_upload</mat-icon>
+        </button> -->
+        
+          <button mat-button (click)="openAddTransactionDialog()" [disabled]="!selectedAccount">
+            <mat-icon>add</mat-icon>Add New
+          </button>
+          <button mat-icon-button (click)="filterTransactions.emit()">
+            <mat-icon>filter_alt</mat-icon>
+          </button>
+          <div class="spacer"></div>
+          <div class="search-box">
+            <mat-form-field appearance="outline">
+              <input matInput type="text" placeholder="Search" (input)="searchTransaction($event)">
+            </mat-form-field>
+          </div>
+          
+        </div>
+    </div>
+    
+  </div>

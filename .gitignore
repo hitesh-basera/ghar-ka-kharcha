@@ -8,7 +8,9 @@
 /bazel-out
 
 # Node
-/node_modules
+# /node_modules  (at the root of your repository)
+# any directory or subdirectory"
+**/node_modules
 npm-debug.log
 yarn-error.log
 

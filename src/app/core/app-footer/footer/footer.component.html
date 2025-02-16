@@ -12,10 +12,10 @@
               </a>
             </ng-container>
             <ng-template #notLoggedIn>
-              <a *ngIf="router.url === '/login'" routerLink="/signUp" class="text-white" mat-button>
+              <a *ngIf="router.url === '/login'" routerLink="/signUp" class="text-dark yellow-button" mat-button>
                 <i class="fa fa-1x fa-fw fa-user-plus"></i> Sign up
               </a>
-              <a *ngIf="router.url === '/signUp'" routerLink="/login" class="text-white" mat-button>
+              <a *ngIf="router.url === '/signUp'" routerLink="/login" class="text-dark yellow-button" mat-button>
                 <i class="fa fa-1x fa-fw fa-user-plus"></i> Login
               </a>
             </ng-template>

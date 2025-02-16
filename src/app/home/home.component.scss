@@ -1,0 +1,149 @@
+.container {
+    display: flex;
+    flex-direction: column; /* Arrange sections vertically */
+    //font-family: sans-serif;
+    padding: 20px;
+    gap: 20px; /* Add spacing between sections */
+  }
+  
+  h1 {
+    text-align: center; /* Center the title */
+    margin-bottom: 20px;
+  }
+  
+  .accounts,
+  .categories,
+  .transactions,
+  .add-transaction {
+    border: 1px solid #ccc; /* Add borders */
+    padding: 20px;
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #f9f9f9; /* Light background color */
+  }
+  
+  h2 {
+    margin-bottom: 10px;
+    color: #333; /* Darker heading color */
+  }
+  
+  ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+  }
+  
+  li {
+    margin-bottom: 5px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  th,
+  td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #eee; /* Light gray header background */
+    font-weight: bold;
+  }
+  
+  .expense {
+    color: red;
+  }
+  
+  .income {
+    color: green;
+  }
+  
+  .filter {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .filter label {
+    margin-right: 5px;
+    white-space: nowrap; /* Prevent labels from wrapping */
+  }
+  
+  .filter input,
+  .filter select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .filter button {
+    padding: 8px 15px;
+    background-color: #007bff; /* Blue button */
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .filter button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  .add-transaction label {
+    display: block; /* Labels on top of inputs */
+    margin-bottom: 5px;
+  }
+  
+  .add-transaction input,
+  .add-transaction select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box; /* Include padding in width */
+  }
+  
+  .add-transaction button {
+    padding: 10px 20px;
+    background-color: #28a745; /* Green button */
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .add-transaction button:hover {
+    background-color: #1e7e34; /* Darker green on hover */
+  }
+  
+  /* Style for subcategories */
+  .categories ul ul {
+    /* Target nested unordered lists */
+    margin-left: 20px; /* Indent subcategories */
+    list-style-type: circle; /* Change bullet style if you want */
+  }
+  
+  /* Responsive adjustments (example) */
+  @media (max-width: 768px) {
+    .filter {
+      flex-direction: column; /* Stack filter elements vertically */
+      align-items: flex-start; /* Align items to the left */
+    }
+  
+    table {
+      display: block; /* Make table scrollable horizontally */
+      overflow-x: auto;
+    }
+  }
+  .no-accounts {
+    text-align: center;
+    padding: 20px;
+  }

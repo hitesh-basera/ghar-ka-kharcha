@@ -1,0 +1,101 @@
+<div class="container">
+  <app-account-header [selectedAccount]="selectedAccount"
+  (importTransactions)="onImportTransactions()"
+  (addTransaction)="onAddTransaction()"
+  (filterTransactions)="onFilterTransactions()"
+  (searchTransactions)="onSearchTransactions($event)"></app-account-header>
+    <div class="transactions">
+        <h2>Transactions</h2>
+        
+        <!--<form [formGroup]="transactionFilterForm">
+           <div class="filter">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" formControlName="startDate">
+    
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" formControlName="endDate">
+    
+            <label for="account">Account:</label>
+            <select id="account" formControlName="accountId">
+              <option [ngValue]="null">All</option>
+              <option *ngFor="let account of allAccounts" [ngValue]="account.id">
+                {{ account.name }}
+              </option>
+            </select>
+    
+            <label for="category">Category:</label>
+            <select id="category" formControlName="categoryId">
+              <option [ngValue]="null">All</option>
+              <option *ngFor="let category of categories" [ngValue]="category.id">
+                {{ category.name }}
+              </option>
+            </select>
+    
+            <button type="button" (click)="loadTransactions()">Apply Filter</button>
+          </div> 
+        </form>-->
+        <div class="table-container">
+          <div class="table-header row">
+            <div class="cell header">Date</div>
+            <div class="cell header" *ngIf="!selectedAccount">Account</div>
+            <div class="cell header">Category</div>
+            <div class="cell header">Amount</div>
+            <div class="cell header">Description</div>
+            <div class="cell header">Actions</div>
+          </div>
+          <div class="table-body">
+            <div class="table-row row" *ngFor="let transaction of transactions; let i = index">
+              <div class="cell" data-label="Date" *ngIf="!editingTransaction || editingTransaction.id !== transaction.id">
+                {{ transaction.date |date }}
+              </div>
+              <div class="cell" data-label="Account" *ngIf="!selectedAccount">
+                {{ getAccountName(transaction.accountId) |titlecase }}
+              </div>
+              <div class="cell" data-label="Category" *ngIf="!editingTransaction || editingTransaction.id !== transaction.id">
+                {{ getCategoryName(transaction.categoryId) }}
+              </div>
+              <div class="cell" data-label="Amount" *ngIf="!editingTransaction || editingTransaction.id !== transaction.id"
+              [ngClass]="{ 'expense': transaction.amount < 0, 'income': transaction.amount >= 0 }">
+                {{ transaction.amount | number }}  </div>
+              <div class="cell" data-label="Description">
+                {{ transaction.description }}
+              </div>
+
+              <!-- Update inline -->
+
+              <div class="cell" data-label="Date" *ngIf="editingTransaction && editingTransaction.id === transaction.id">
+                <input type="date" [(ngModel)]="editingTransaction.date">
+              </div>
+              <!-- <div class="cell" data-label="Account" *ngIf="editingTransaction && editingTransaction.id === transaction.id">
+                <select [(ngModel)]="editingTransaction.accountId">
+                  <option *ngFor="let account of allAccounts" [ngValue]="account.id">
+                    {{account.name}}
+                  </option>
+                </select>
+              </div> -->
+              <div class="cell" data-label="Category" *ngIf="editingTransaction && editingTransaction.id === transaction.id">
+                <select [(ngModel)]="editingTransaction.categoryId">
+                  <option *ngFor="let category of categories" [ngValue]="category.id">
+                    {{category.name}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="cell" data-label="Amount" *ngIf="editingTransaction && editingTransaction.id === transaction.id"
+              [ngClass]="{ 'expense': transaction.amount < 0, 'income': transaction.amount >= 0 }">
+              <input type="number" [(ngModel)]="editingTransaction.amount"> </div>
+
+              <div class="cell" data-label="Description" *ngIf="editingTransaction && editingTransaction.id === transaction.id">
+                <input type="text" [(ngModel)]="editingTransaction.description">
+              </div>
+
+              <div class="cell" data-label="Actions">
+                <button mat-icon-button color="primary" *ngIf="!editingTransaction || editingTransaction.id !== transaction.id" (click)="editTransaction(transaction)"><mat-icon>edit</mat-icon></button>
+                <button mat-icon-button color="warn" *ngIf="!editingTransaction || editingTransaction.id !== transaction.id" (click)="deleteTransaction(transaction.id)"><mat-icon>delete</mat-icon></button>
+                <button *ngIf="editingTransaction && editingTransaction.id === transaction.id" (click)="saveTransaction(editingTransaction)">Save</button>
+                <button *ngIf="editingTransaction && editingTransaction.id === transaction.id" (click)="cancelEdit()">Cancel</button>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

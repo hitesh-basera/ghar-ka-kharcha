@@ -17,14 +17,14 @@ $primary: mat.m2-define-palette($mat-blue, 700);
 $accent: mat.m2-define-palette($mat-orange, 800, A100, A400);
 
 .custom-gradient {
-  background: linear-gradient(to right, #292c2d, #40118274); 
+  background: #e9e88582; 
 }
 .app-container {
-  min-height: 100vh;
+  min-height: 60vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to bottom, #3c4f56, #501d9774);
+  background: linear-gradient(to bottom,#c6cbcd, #e9e88582);
 }
 // The warn palette is optional (defaults to red).
 $warn: mat.m2-define-palette($mat-red, 600);
@@ -94,4 +94,8 @@ mat-nav-list, mat-list {
       cursor: -moz-grabbing;
       cursor: -webkit-grabbing;
     }
+  }
+  .purple-button {
+    background-color: $palette-purple-40;
+    // ... other styles
   }
