@@ -133,13 +133,14 @@ private async addSampleAccounts(): Promise<void> {
 
 private async addSampleCategories(): Promise<void> {
   const sampleCategories: Category[] = [
-    { name: 'Income', parentCategoryId: undefined }, // Top-level category
-    { name: 'Salary', parentCategoryId: 1 },        // Subcategory of Income (assuming Income gets id 1)
-    { name: 'Expenses', parentCategoryId: undefined }, // Top-level category
-    { name: 'Food', parentCategoryId: 3 },
-    { name: 'Housing', parentCategoryId: 3 },
-    { name: 'Transportation', parentCategoryId: 3 },
-    { name: 'Utilities', parentCategoryId: 5 }, // Subcategory of Housing (assuming Housing gets id 5)
+    { name: 'Income', parentCategoryId: undefined,icon:  'attach_money'}, // Top-level category
+    { name: 'Salary', parentCategoryId: 1 ,icon:  'monetization_on'},        // Subcategory of Income (assuming Income gets id 1)
+    { name: 'Expenses', parentCategoryId: undefined, icon:  'trending_down'}, // Top-level category
+    { name: 'Food', parentCategoryId: 3 , icon:  'restaurant'},
+    { name: 'Housing', parentCategoryId: 3 ,icon:  'home'},
+    { name: 'Transportation', parentCategoryId: 3 ,icon:  'directions_bus'},
+    { name: 'Utilities', parentCategoryId: 5 ,icon:  'lightbulb_circle'}, // Subcategory of Housing (assuming Housing gets id 5)
+    { name: 'Gifts', parentCategoryId: 3 ,icon: 'featured_seasonal_and_gifts'},
   ];
   await this.addCategories(sampleCategories);
 }
@@ -151,7 +152,7 @@ private async addSampleTransactions(): Promise<void> {
   const accounts = await this.getAccounts();
   const categories = await this.getCategories();
 
-  const checkingAccount = accounts.find(acc => acc.name === 'Checking Account');
+  const checkingAccount = accounts.find(acc => acc.name === 'Current Account');
   const savingsAccount = accounts.find(acc => acc.name === 'Savings Account');
   const creditCardAccount = accounts.find(acc => acc.name === 'Credit Card');
 
