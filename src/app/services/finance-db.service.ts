@@ -43,6 +43,13 @@ export class FinanceDbService {
     return await this.db.categories.where('parentCategoryId').equals(parentCategoryId).toArray();
   }
 
+  async updateCategory(category:Category):Promise<number>{
+    return await this.db.categories.put(category);
+    }
+  async deleteCategory(id: number):Promise<void>{
+    return await this.db.categories.delete(id);
+  }
+
   // Transaction Operations
   async addTransaction(transaction: Transaction): Promise<number> {
     return await this.db.transactions.add(transaction);

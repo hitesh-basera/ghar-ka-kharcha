@@ -1,5 +1,5 @@
 export interface Category {
-  id?: number;
+  id?: number;//Auto-incremented ID
   name: string; // e.g., "Food", "Housing", "Transportation", "Income"
   parentCategoryId?: number; // For subcategories (optional)
 }
