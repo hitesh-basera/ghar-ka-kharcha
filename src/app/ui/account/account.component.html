@@ -1,11 +1,11 @@
 <div class="container">
-  <app-account-header [selectedAccount]="selectedAccount"
-  (importTransactions)="onImportTransactions()"
-  (addTransaction)="onAddTransaction()"
-  (filterTransactions)="onFilterTransactions()"
-  (searchTransactions)="onSearchTransactions($event)"></app-account-header>
+  <h4>Select account from menu, provide expense details and that is it!</h4>  
+  <ng-container *ngIf="selectedAccount">
+    <app-expense-input (transactionsAdded)="onTransactionsAdded()"></app-expense-input>
+    <app-account-header [selectedAccount]="selectedAccount" (searchTransactions)="onSearchTransactions($event)"></app-account-header>
+  </ng-container>
     <div class="transactions">
-        <h2>Transactions</h2>
+        <h2>All Transactions</h2>
         
         <!--<form [formGroup]="transactionFilterForm">
            <div class="filter">

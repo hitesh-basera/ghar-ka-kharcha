@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Category } from '../../shared/interfaces/category.model';
 import { CategoryService } from '../../services/category.service';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop'
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CategoryDialogComponent } from '../category-dialog/category-dialog.component';
@@ -14,7 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, MatSnackBarModule,MatTableModule, MatButtonModule, MatIconModule, MatFormFieldModule],
+  imports: [CommonModule, MatDialogModule, MatSnackBarModule, MatTableModule, MatButtonModule, MatIconModule, MatFormFieldModule],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss'
 })
@@ -32,6 +31,7 @@ export class CategoryComponent implements OnInit {
   constructor(private dialog:MatDialog,
     categoryService: CategoryService,
     private snackBar: MatSnackBar
+    
   ){ // only for module based components
     this.categoryService = categoryService;
   }

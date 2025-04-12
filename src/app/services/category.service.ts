@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FinanceDbService } from './finance-db.service';
 import { Category } from '../shared/interfaces/category.model';
-import { BehaviorSubject, from, map, Observable } from 'rxjs';
+import { BehaviorSubject, first, from, map, Observable, reduce, toArray } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -46,7 +46,12 @@ categories$: Observable<Category[]> = this.categoriesSubject.asObservable();
   getSubcategories(parentCategoryId: number): Observable<Category[]> {
     return from(this.db.getSubcategories(parentCategoryId));
   }
-
+  async getCategoryByAccount(accountId: number):Promise<Category[]>
+  {
+    const categoriesList= await this.db.getCategoriesByAccount(accountId);
+    console.log(categoriesList);
+    return categoriesList;
+  }
   updateCategory(category: Category): Observable<number> {
     return from(this.db.updateCategory(category)).pipe(
       map(() => {

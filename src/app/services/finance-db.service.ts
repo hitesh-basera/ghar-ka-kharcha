@@ -3,13 +3,15 @@ import { Account } from '../shared/interfaces/account.model';
 import { Category } from '../shared/interfaces/category.model';
 import { Transaction } from '../shared/interfaces/transaction.model';
 import Dexie, { Table } from 'dexie';
+import { catchError, from, Observable, of, switchMap, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
 export class FinanceDbService {
   private db: MyDatabase;
-  
-  constructor() { 
+  private askGemini = 'http://localhost:3001/api/askGemini/';
+  constructor(private http: HttpClient) { 
     this.db = new MyDatabase(); // Database name
     this.populateSampleDataIfNeeded();
   }
@@ -23,7 +25,10 @@ export class FinanceDbService {
   async getAccounts(): Promise<Account[]> {
     return await this.db.accounts.toArray();
   }
-
+  async updateAccount(account:Account):Promise<number>
+  {
+    return await this.db.accounts.put(account);
+    }
   // Category Operations
   async addCategory(category: Category): Promise<number> {
     return await this.db.categories.add(category);
@@ -39,6 +44,9 @@ export class FinanceDbService {
     return await this.db.categories.get(id);
   }
 
+  async getCategoriesByAccount(accountId: number):Promise<Category[]>{
+    return await this.db.categories.where('accountId').equals(accountId).toArray();
+  }
   async getSubcategories(parentCategoryId: number): Promise<Category[]> {
     return await this.db.categories.where('parentCategoryId').equals(parentCategoryId).toArray();
   }
@@ -51,6 +59,28 @@ export class FinanceDbService {
   }
 
   // Transaction Operations
+  suggestTransactions(
+    expenseText: string,
+    categories: Category[],
+    accountId: number
+  ): Observable<Transaction[]> {
+  if (!expenseText) {
+      // Return an observable error if parsing fails
+      return throwError(() => new Error('Invalid expense text format. Could not parse description.'));
+  }
+  // 2. Call Backend for Categorization
+  return this.http.post<Transaction[]>(this.askGemini+'process', {
+    description: expenseText,
+    categories: categories,
+    accountId: accountId,}
+  ).pipe(
+    catchError(error => {
+      // Handle errors from HTTP call or Dexie save
+      console.error('Error in categorizeAndSaveTransaction:', error);
+      return throwError(() => new Error('Failed to process text and generate transactions.'));
+    })
+  );
+  }
   async addTransaction(transaction: Transaction): Promise<number> {
     return await this.db.transactions.add(transaction);
   }
@@ -133,14 +163,13 @@ private async addSampleAccounts(): Promise<void> {
 
 private async addSampleCategories(): Promise<void> {
   const sampleCategories: Category[] = [
-    { name: 'Income', parentCategoryId: undefined,icon:  'attach_money'}, // Top-level category
-    { name: 'Salary', parentCategoryId: 1 ,icon:  'monetization_on'},        // Subcategory of Income (assuming Income gets id 1)
-    { name: 'Expenses', parentCategoryId: undefined, icon:  'trending_down'}, // Top-level category
-    { name: 'Food', parentCategoryId: 3 , icon:  'restaurant'},
-    { name: 'Housing', parentCategoryId: 3 ,icon:  'home'},
-    { name: 'Transportation', parentCategoryId: 3 ,icon:  'directions_bus'},
-    { name: 'Utilities', parentCategoryId: 5 ,icon:  'lightbulb_circle'}, // Subcategory of Housing (assuming Housing gets id 5)
-    { name: 'Gifts', parentCategoryId: 3 ,icon: 'featured_seasonal_and_gifts'},
+    { name: 'Income', parentCategoryId: undefined,icon:  'attach_money',type:'income'}, // Top-level category
+    { name: 'Salary', parentCategoryId: 1 ,icon:  'monetization_on',type:'income'},        // Subcategory of Income (assuming Income gets id 1)
+    { name: 'Food', parentCategoryId: 3 , icon:  'restaurant',type:'expense'},
+    { name: 'Housing', parentCategoryId: 3 ,icon:  'home',type:'expense'},
+    { name: 'Transportation', parentCategoryId: 3 ,icon:  'directions_bus',type:'expense'},
+    { name: 'Utilities', parentCategoryId: 5 ,icon:  'lightbulb_circle',type:'expense'}, // Subcategory of Housing (assuming Housing gets id 5)
+    { name: 'Gifts', parentCategoryId: 3 ,icon: 'featured_seasonal_and_gifts',type:'expense'},
   ];
   await this.addCategories(sampleCategories);
 }
@@ -197,6 +226,26 @@ async getCategoryExpenses(categoryId: number, startDate?: Date, endDate?: Date):
         return transaction.amount < 0 ? sum + transaction.amount : sum;
     }, 0);
 });
+}
+
+// Basic parsing function (Needs improvement for real-world use)
+private parseExpenseText(text: string): { amount: number; description: string } {
+  // Example: Find first number as amount, rest as description
+  // WARNING: Replace with robust REGEX for currency symbols (₹, $ etc.), decimals, separators.
+  const amountMatch = text.match(/(\d+(\.\d+)?)/);
+  let amount = 0;
+  let description = text.trim();
+
+  if (amountMatch) {
+      amount = parseFloat(amountMatch[0]);
+      description = text.replace(amountMatch[0], '').replace(/rs\.?|₹|inr|for|on|spent/gi, '').trim();
+       // Handle cases where description might become empty after stripping amount/keywords
+       if (!description) {
+           description = "Unspecified Expense";
+       }
+  }
+  // If no amount found, return 0 or handle error appropriately
+  return { amount, description };
 }
 }
 // Define your Dexie database class

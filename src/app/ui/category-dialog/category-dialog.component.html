@@ -6,10 +6,24 @@
       <input matInput formControlName="name">
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Icon (Material Icon Name)</mat-label>
-      <input matInput formControlName="icon">
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <mat-label>Type</mat-label>
+      <mat-select id="categoryType" formControlName="type" required>
+      <mat-option [value]="null">-- Select a  type --</mat-option>
+      <mat-option *ngFor="let catType of categoryTypes" [value]="catType">
+        {{ catType | titlecase }}
+      </mat-option>
+    </mat-select>
     </mat-form-field>
+    
+    <!-- <mat-form-field appearance="outline">
+      <mat-label>Parent Category</mat-label>
+      <input matInput formControlName="parentCategory">
+    </mat-form-field> -->
+    <!-- <mat-form-field appearance="outline">
+      <mat-label>Icon Name</mat-label>
+      <input matInput formControlName="icon">
+    </mat-form-field> -->
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

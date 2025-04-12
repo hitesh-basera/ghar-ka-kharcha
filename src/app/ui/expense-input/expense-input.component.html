@@ -1,0 +1,35 @@
+<div class="expense-suggestion-container">
+<form>
+    <div>
+        <mat-form-field style="width: 650px">
+            <mat-label>500 for groceries 09/11/2024, 150 coffee 18th Apr 2025 </mat-label>
+            <textarea matInput id="expenseText"
+                     [formControl]="expenseDescription" 
+                      cdkTextareaAutosize
+                      #autosize="cdkTextareaAutosize"
+                      cdkAutosizeMinRows="1"
+                      cdkAutosizeMaxRows="9"></textarea>
+          </mat-form-field>
+          <div *ngIf="expenseDescription.invalid && (expenseDescription.dirty || expenseDescription.touched)" class="error-message">
+            Description is required.
+          </div>
+      </div>
+      <button type="button" [disabled]="isLoading || !this.accountId" (click)="onSubmit()">
+        {{ isLoading ? 'Processing...' : 'Generate Expense' }}
+      </button>
+      <!-- <div *ngIf="successMessage" style="color: green;"><button type="button" (click)="addBulkTransactions()">
+        Add Bulk</button></div> -->
+      
+    <div *ngIf="isLoading">...</div>
+    <div *ngIf="successMessage" style="color: green;">{{ successMessage }}</div>
+</form>
+<div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
+<!-- <div *ngIf="suggestedTransactions.length > 0 && !isLoading">
+    <h3>Suggested Transactions:</h3>
+    <ul>
+      <li *ngFor="let transaction of suggestedTransactions">
+        Date: {{ transaction.date | date }} | Amount: {{ transaction.amount }} | Category ID: {{ transaction.categoryId }} | Description: {{ transaction.description }}
+      </li>
+    </ul>
+</div> -->
+</div>

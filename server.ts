@@ -1,3 +1,4 @@
+const dotev = require('dotenv').config({path:'.env.development'});
 import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine } from '@angular/ssr';
 import express from 'express';
@@ -46,7 +47,7 @@ export function app(): express.Express {
 
 function run(): void {
   const port = process.env['PORT'] || 4000;
-
+  
   // Start up the Node server
   const server = app();
   server.listen(port, () => {

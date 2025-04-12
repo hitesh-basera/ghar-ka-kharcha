@@ -1,0 +1,57 @@
+/* component.css */
+.table-container {
+    display: block; /* Or display: grid; if you prefer Grid */
+    width: 100%;
+    border-collapse: collapse; /* For border management if needed */
+    border-spacing: 0; /* For border management if needed */
+  }
+  
+  .row {
+    display: flex;
+    flex-wrap: wrap; /* Important for responsiveness, allows cells to wrap */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12); /* Light border for rows */
+  }
+  
+  .table-header {
+    font-weight: bold;
+    background-color: #f4f4f4; /* Light grey background for header */
+  }
+  
+  .cell {
+    flex: 1; /* Equal distribution of space */
+    padding: 16px;
+    text-align: left;
+    word-break: break-word; /* Prevent long words from breaking layout */
+    min-width: 0; /* Allows cells to shrink below content width if needed */
+  }
+  
+  /* Optional: If you want borders between cells (like a traditional table) */
+  .cell {
+    border-right: 1px solid rgba(0, 0, 0, 0.12); /* Example right border */
+  }
+//   .cell:last-child {
+//     /* border-right: none; */ /* Remove border from last cell */
+//   }
+  
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) { /* Adjust breakpoint as needed */
+    .row {
+      flex-direction: column; /* Stack cells vertically on smaller screens */
+      border-bottom: none; /* Remove row border on stacked layout */
+    }
+    .cell {
+      display: block; /* Make cells full width when stacked */
+      text-align: left; /* Reset text alignment */
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12); /* Border between stacked cells */
+    }
+    .cell::before { /* Add column name as a label before the content */
+      content: attr(data-label); /* Use data-label attribute for column name */
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: rgba(0, 0, 0, 0.6); /* Muted color for label */
+    }
+    .cell:last-child {
+      border-bottom: none; /* Remove border from last stacked cell */
+    }
+  }

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FinanceDbService } from '../../services/finance-db.service';
 import { Account } from '../../shared/interfaces/account.model';
@@ -12,11 +12,14 @@ import { ActivatedRoute, Data } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 import { AccountService } from '../../services/account.service';
+import { TransactionDialogComponent, TransactionDialogData } from '../add-transaction-dialog/add-transaction-dialog.component';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { ExpenseInputComponent } from "../expense-input/expense-input.component";
 
 @Component({
   selector: 'app-account',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule,MatIconModule, AccountHeaderComponent],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, MatIconModule, MatDialogModule, AccountHeaderComponent, ExpenseInputComponent],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
 })
@@ -42,14 +45,11 @@ export class AccountComponent implements OnInit, OnDestroy {
     private financeDbService: FinanceDbService,
     private fb: FormBuilder,// Inject FormBuilder
     private route: ActivatedRoute,
-    private accountService: AccountService
+    private accountService: AccountService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit():void {
-    // this.route.data.subscribe((data: Data) => {
-    //   this.selectedAccount = data['selectedAccount'] as Account | undefined;
-    // });
-    //this.loadData();
     this.accountSubscription = this.accountService.selectedAccount$.subscribe(accountName => {
       this.selectedAccount = accountName;
       if (this.selectedAccount) {
@@ -64,8 +64,8 @@ export class AccountComponent implements OnInit, OnDestroy {
     // Initialize the form in ngOnInit
     this.transactionForm = this.fb.group({
       date: new Date(), // Initialize with current date
-      accountId: null, // Initialize to null or a default value
-      categoryId: null, // Initialize to null or a default value
+      accountId: null, 
+      categoryId: null,
       amount: 0,
       description: ''
     });
@@ -85,10 +85,6 @@ export class AccountComponent implements OnInit, OnDestroy {
   async loadData() {
     this.allAccounts = await this.financeDbService.getAccounts();
     this.categories = await this.financeDbService.getCategories();
-    //this.loadTransactions(); // Load with initial filter (if any)
-  //   if (this.accounts.length > 0) {
-  //     this.selectedAccount = this.accounts[0];
-  // }
   }
   async loadTransactions() {
     if(this.selectedAccount) {
@@ -110,28 +106,33 @@ getCategoryName(categoryId: number): string {
 getSubcategories(parentCategoryId: number): Category[] {
   return this.categories.filter(c => c.parentCategoryId === parentCategoryId);
 }
-async addTransaction() {
-  if (this.transactionForm.valid) { // Check form validity
-    try {
-      await this.financeDbService.addTransaction(this.newTransaction);
-      this.newTransaction = { // Reset the newTransaction object
-          date: new Date(),
-          accountId: 0,
-          categoryId: 0,
-          amount: 0,
-          description: ''
-      };
-      this.loadTransactions(); // Refresh transactions
-  } catch (error) {
-      console.error('Error adding transaction:', error);
-  }
-  } else {
-      // Trigger validation to show errors
-      this.transactionForm.markAllAsTouched();
-  }
-}
+
 editTransaction(transaction: Transaction) {
-  this.editingTransaction = { ...transaction }; // Create a copy for editing
+  const dialogData: TransactionDialogData = {
+    mode: 'edit',
+    transaction:{...transaction}
+  };
+
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.disableClose = true; // Prevent closing by clicking outside
+  dialogConfig.autoFocus = true;    // Focus the first form field
+  dialogConfig.width = '450px';
+  dialogConfig.data = dialogData;
+
+  if (transaction.id) {
+        const dialogRef = this.dialog.open(TransactionDialogComponent, dialogConfig);
+  
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            if (this.selectedAccount) {
+              this.accountService.setSelectedAccount(this.selectedAccount);
+            }
+          }
+          else{
+            console.log('Edit dialog cancelled');
+          }
+        });
+      }
 }
 
 async saveTransaction(transaction: Transaction) {
@@ -189,12 +190,7 @@ onSearchTransactions(searchTerm: string) {
       );
   });
 }
-// onAccountSelected(account: Account) {
-//   this.selectedAccount = account;
-//   this.loadTransactionsForAccount(account.id);
-// }
-async loadTransactionsForAccount(accountId: number|undefined)
-{
-  this.selectedAccount = await this.financeDbService.getAccountById(accountId??0);
+async onTransactionsAdded(): Promise<void> {
+this.loadTransactions(); // Refresh the grid
 }
 }

@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>Suggested Transactions</h2>
+<mat-dialog-content>
+    <div class="container">
+        <div class="transactions">
+            <h6>Verify your expense! Anything missing, don't worry you can update it anytime.</h6>
+            <div class="table-container">
+                <div class="table-header row">
+                  <div class="cell header">Date</div>
+                  <div class="cell header" *ngIf="!selectedAccount">Account</div>
+                  <div class="cell header">Category</div>
+                  <div class="cell header">Amount</div>
+                  <div class="cell header" style="width:9%;">Description</div>
+                </div>
+                <div class="table-body">
+                  <div class="table-row row" *ngFor="let transaction of suggestedTransactions; let i = index">
+                    <div class="cell" data-label="Date">
+                      {{ transaction.date |date }}
+                    </div>
+                    <div class="cell" data-label="Account" *ngIf="!selectedAccount">
+                      {{ selectedAccount |titlecase }}
+                    </div>
+                    <div class="cell" data-label="Category">
+                      {{ getCategoryName(transaction.categoryId)}}
+                    </div>
+                    <div class="cell" data-label="Amount">
+                      {{ transaction.amount | number }}  </div>
+                    <div class="cell" data-label="Description">
+                      {{ transaction.description }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </mat-dialog-content>
+    <div class="cell" data-label="Actions">
+        <mat-dialog-actions align="end">
+            <button mat-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary" (click)="saveTransactions()">Add All</button>
+            </mat-dialog-actions>
+    </div>

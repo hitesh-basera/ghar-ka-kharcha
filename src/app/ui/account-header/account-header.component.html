@@ -1,7 +1,13 @@
 <div class="account-header">
     <div class="account-info">
-      <h3 class="account-name">{{ selectedAccount?.name |titlecase }}</h3>
-      <p class="account-balance">{{ selectedAccount?.balance | number }}</p>
+      <!-- <p class="account-balance">{{ account | number }}</p> -->
+      <ng-container *ngIf="account$ | async as account; else loading">
+        <h3 class="account-name">{{ account.name | titlecase }}</h3>
+        <span> Balance: {{ account.balance | currency:'INR':'symbol':'':'en-IN' }}</span>
+     </ng-container>
+     <ng-template #loading>
+      <span>Updating account...</span>
+     </ng-template>
       <div class="account-actions">
         <!-- <button mat-icon-button (click)="importTransactions.emit()">
           <mat-icon>file_upload</mat-icon>
@@ -10,9 +16,9 @@
           <button mat-button (click)="openAddTransactionDialog()" [disabled]="!selectedAccount">
             <mat-icon>add</mat-icon>Add New
           </button>
-          <button mat-icon-button (click)="filterTransactions.emit()">
+          <!-- <button mat-icon-button (click)="filterTransactions.emit()">
             <mat-icon>filter_alt</mat-icon>
-          </button>
+          </button> -->
           <div class="spacer"></div>
           <div class="search-box">
             <mat-form-field appearance="outline">

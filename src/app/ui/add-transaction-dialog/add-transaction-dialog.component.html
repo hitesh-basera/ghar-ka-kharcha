@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Add Transaction</h2>
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
 <mat-dialog-content>
   <form [formGroup]="transactionForm">
     <mat-form-field appearance="outline" style="width: 100%;">
@@ -11,13 +11,25 @@
 
     <mat-form-field appearance="outline" style="width: 100%;">
       <mat-label>Account</mat-label>
-      <input matInput formControlName="account" readonly>
-      <mat-error *ngIf="transactionForm.get('account')?.hasError('required')">Account is required</mat-error>
+      <!-- <input matInput formControlName="category" required> -->
+      <mat-select id="acccountSelect" formControlName="accountId" required>
+        <mat-option [value]="null">-- Select Account --</mat-option>
+        <mat-option *ngFor="let account of accounts$ | async" [value]="account.id">
+          {{ account.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="transactionForm.get('category')?.hasError('required')">Category is required</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" style="width: 100%;">
       <mat-label>Category</mat-label>
-      <input matInput formControlName="category" required>
+      <!-- <input matInput formControlName="category" required> -->
+      <mat-select id="categorySelect" formControlName="categoryId" required>
+        <mat-option [value]="null">-- Select Category --</mat-option>
+        <mat-option *ngFor="let category of categories$ | async" [value]="category.id">
+          {{ category.name }}
+        </mat-option>
+      </mat-select>
       <mat-error *ngIf="transactionForm.get('category')?.hasError('required')">Category is required</mat-error>
     </mat-form-field>
 
@@ -36,5 +48,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-raised-button color="primary" (click)="onSaveClick()" [disabled]="transactionForm.invalid">Save</button>
+  <button mat-raised-button color="primary" (click)="onSaveClick()" [disabled]="transactionForm.invalid">{{ saveButtonText }}</button>
 </mat-dialog-actions>
