@@ -103,9 +103,9 @@ getCategoryName(categoryId: number): string {
   return category ? category.name : '';
 }
 
-getSubcategories(parentCategoryId: number): Category[] {
-  return this.categories.filter(c => c.parentCategoryId === parentCategoryId);
-}
+// getSubcategories(parentCategoryId: number): Category[] {
+//   return this.categories.filter(c => c.parentCategoryId === parentCategoryId);
+// }
 
 editTransaction(transaction: Transaction) {
   const dialogData: TransactionDialogData = {

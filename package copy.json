@@ -1,16 +1,10 @@
 {
   "name": "ghar-ka-kharcha",
   "version": "0.0.0",
-  "main":"expense-backend/index.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start-prod": "ng serve",
-    "build:backend":"tsc -p expense-backend/tsconfig.json",
-    "build:frontend":"ng build --configuration production",
-    "build:frontend:dev":"ng build --configuration development",
-    "build": "npm run build:backend && npm run build:frontend",
-    "build:dev": "npm run build:backend && npm run build:frontend:dev",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "serve:ssr:general-expense-tracker": "node dist/general-expense-tracker/server/server.mjs"
   },

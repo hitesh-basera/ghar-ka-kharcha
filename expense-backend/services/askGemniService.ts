@@ -1,15 +1,12 @@
 import {GoogleGenerativeAI  } from '@google/generative-ai';
-import * as dotenv from 'dotenv';
 import { Transaction } from '../shared/interfaces/transaction.model.js';
 import { Category } from '../shared/interfaces/category.model.js';
 
-const dotenvResult = dotenv.config({ path: '.env.development' });
-const apiKey: string | undefined = process.env.GEMINI_API_KEY;
-const genAI = new GoogleGenerativeAI(apiKey??'');
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); // Or choose another suitable model
-// const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro-preview-03-25" }); // Or choose another suitable model
-
 export async function getExpenses(description: string, categories:Category[], accountId:number) {
+  const apiKey: string | undefined = process.env['GEMINI_API_KEY'];
+  const genAI = new GoogleGenerativeAI(apiKey??'');
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); // Or choose another suitable model
+
     const currentDate = new Date().toISOString().slice(0, 10);
     const categoryListString = JSON.stringify(categories.map(cat => ({ id: cat.id, name: cat.name })));
     const prompt = `Analyze the given expense description:"${description}", associated with given Account Id: ${accountId} and the following list of categories: ${categoryListString}
@@ -56,8 +53,6 @@ export async function getExpenses(description: string, categories:Category[], ac
 
     try {
         const result = await model.generateContent(prompt);
-        //const response = await result.response;
-        //let text = response.text().trim();
         const responseText = result.response.candidates?.[0]?.content?.parts?.[0]?.text;
         if (responseText) {
             let jsonString = responseText;
@@ -72,7 +67,6 @@ export async function getExpenses(description: string, categories:Category[], ac
             }
             try {
               const transactions: Transaction[] = JSON.parse(jsonString);
-              console.log(transactions);
               return transactions;
             } catch (error) {
                 console.error('Error parsing Gemini response (after cleanup):', error);
@@ -96,8 +90,8 @@ export async function getExpenses(description: string, categories:Category[], ac
 
 export async function testGemini(){
     try{
-    const result = await model.generateContent("Explain how AI works in a few words");
-    return result.response.text();
+    //const result = await model.generateContent("Explain how AI works in a few words");
+    return "test";
     }
     catch(error)
     {

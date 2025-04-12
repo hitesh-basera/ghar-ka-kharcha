@@ -153,7 +153,7 @@ app.use(express.urlencoded({ extended: true }));
 //     next();
 //   });
 //#endregion
-app.use('/api/askGemini', askGeminiRoute); //mount route
+app.use('/api', askGeminiRoute); //mount route
 app.get('/api/health', (req, res) => {
     res.send('Expense Backend is healthy!');
 });

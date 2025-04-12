@@ -5,12 +5,14 @@ import { Transaction } from '../shared/interfaces/transaction.model';
 import Dexie, { Table } from 'dexie';
 import { catchError, from, Observable, of, switchMap, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import {environment} from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class FinanceDbService {
   private db: MyDatabase;
-  private askGemini = 'http://localhost:3001/api/askGemini/';
+  private baseUrl = environment.apiUrl;
+  private askGemini = this.baseUrl+'api/askGemini/';
   constructor(private http: HttpClient) { 
     this.db = new MyDatabase(); // Database name
     this.populateSampleDataIfNeeded();
@@ -68,6 +70,7 @@ export class FinanceDbService {
       // Return an observable error if parsing fails
       return throwError(() => new Error('Invalid expense text format. Could not parse description.'));
   }
+  console.log(environment.apiUrl);
   // 2. Call Backend for Categorization
   return this.http.post<Transaction[]>(this.askGemini+'process', {
     description: expenseText,
@@ -163,13 +166,13 @@ private async addSampleAccounts(): Promise<void> {
 
 private async addSampleCategories(): Promise<void> {
   const sampleCategories: Category[] = [
-    { name: 'Income', parentCategoryId: undefined,icon:  'attach_money',type:'income'}, // Top-level category
-    { name: 'Salary', parentCategoryId: 1 ,icon:  'monetization_on',type:'income'},        // Subcategory of Income (assuming Income gets id 1)
-    { name: 'Food', parentCategoryId: 3 , icon:  'restaurant',type:'expense'},
-    { name: 'Housing', parentCategoryId: 3 ,icon:  'home',type:'expense'},
-    { name: 'Transportation', parentCategoryId: 3 ,icon:  'directions_bus',type:'expense'},
-    { name: 'Utilities', parentCategoryId: 5 ,icon:  'lightbulb_circle',type:'expense'}, // Subcategory of Housing (assuming Housing gets id 5)
-    { name: 'Gifts', parentCategoryId: 3 ,icon: 'featured_seasonal_and_gifts',type:'expense'},
+    { name: 'Income', type:'income'}, // Top-level category
+    { name: 'Salary', type:'income'},        // Subcategory of Income (assuming Income gets id 1)
+    { name: 'Food', type:'expense'},
+    { name: 'Housing', type:'expense'},
+    { name: 'Transportation',type:'expense'},
+    { name: 'Utilities', type:'expense'}, // Subcategory of Housing (assuming Housing gets id 5)
+    { name: 'Gifts', type:'expense'},
   ];
   await this.addCategories(sampleCategories);
 }

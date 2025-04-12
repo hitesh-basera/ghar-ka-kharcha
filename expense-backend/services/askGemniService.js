@@ -8,15 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import * as dotenv from 'dotenv';
-const dotenvResult = dotenv.config({ path: '.env.development' });
-const apiKey = process.env.GEMINI_API_KEY;
-const genAI = new GoogleGenerativeAI(apiKey !== null && apiKey !== void 0 ? apiKey : '');
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); // Or choose another suitable model
-// const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro-preview-03-25" }); // Or choose another suitable model
 export function getExpenses(description, categories, accountId) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a, _b, _c, _d, _e;
+        const apiKey = process.env['GEMINI_API_KEY'];
+        const genAI = new GoogleGenerativeAI(apiKey !== null && apiKey !== void 0 ? apiKey : '');
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); // Or choose another suitable model
         const currentDate = new Date().toISOString().slice(0, 10);
         const categoryListString = JSON.stringify(categories.map(cat => ({ id: cat.id, name: cat.name })));
         const prompt = `Analyze the given expense description:"${description}", associated with given Account Id: ${accountId} and the following list of categories: ${categoryListString}
@@ -62,8 +59,6 @@ export function getExpenses(description, categories, accountId) {
 ]`.trim();
         try {
             const result = yield model.generateContent(prompt);
-            //const response = await result.response;
-            //let text = response.text().trim();
             const responseText = (_e = (_d = (_c = (_b = (_a = result.response.candidates) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.content) === null || _c === void 0 ? void 0 : _c.parts) === null || _d === void 0 ? void 0 : _d[0]) === null || _e === void 0 ? void 0 : _e.text;
             if (responseText) {
                 let jsonString = responseText;
@@ -79,7 +74,6 @@ export function getExpenses(description, categories, accountId) {
                 }
                 try {
                     const transactions = JSON.parse(jsonString);
-                    console.log(transactions);
                     return transactions;
                 }
                 catch (error) {
@@ -107,8 +101,8 @@ export function getExpenses(description, categories, accountId) {
 export function testGemini() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const result = yield model.generateContent("Explain how AI works in a few words");
-            return result.response.text();
+            //const result = await model.generateContent("Explain how AI works in a few words");
+            return "test";
         }
         catch (error) {
             console.error("Error calling Gemini API:", error);
