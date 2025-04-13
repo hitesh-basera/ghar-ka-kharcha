@@ -43,3 +43,10 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Ignore environment variable files
+.env
+.env.*
+
+# --- Optional: Exclude specific .env files if needed ---
+!.env.development
