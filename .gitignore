@@ -1,8 +1,8 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
 # Compiled output
-# Comment below line if using local git deployment to Azure App Service as it directly pushes local /dist to app service
-# /dist
+# !!!Comment below line if using local git deployment to Azure App Service as it directly pushes local /dist to app service!!!
+/dist
 /tmp
 /out-tsc
 /bazel-out
